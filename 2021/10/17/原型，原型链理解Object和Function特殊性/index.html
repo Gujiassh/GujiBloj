@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="chinese">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="GUJI">
+
+
+
+    <meta name="description" content="这是GuJi的个人博客">
+
+
+    <meta name="keywords" content="个人博客 GuJi Baiao">
+
+
+<title>原型，原型链理解Object和Function特殊性 | GUJIA</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">GuJi&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">GuJi&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">原型，原型链理解Object和Function特殊性</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">GUJI</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 17, 2021&nbsp;&nbsp;17:29:09</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/js/">js</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="什么是原型，原型链"><a href="#什么是原型，原型链" class="headerlink" title="什么是原型，原型链"></a>什么是原型，原型链</h1><p>它们对应的名称应该是：</p>
+<p><strong><code>prototype</code>：原型</strong></p>
+<p><strong><code>_proto_</code>:原型链</strong></p>
+<p>它们的从属关系，和实质应该是：</p>
+<p><code>prototype</code>： 它是<strong>函数</strong>的一个属性，并且是一个<strong>对象</strong></p>
+<p><code>_proto_</code>: 它是<strong>对象</strong>的一个属性，并且是一个<strong>对象</strong></p>
+<p><em><strong>对象的_proto_里面保存的是该对象的构造函数的protype</strong></em></p>
+<p>由此得到一个关系图：</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7822149f328c4e488ce0813c15605bee~tplv-k3u1fbpfcp-watermark.image" alt="7.png"></p>
+<p>下面来看一段代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function Test() &#123;&#125;</span><br><span class="line">console.log(Test.prototype)</span><br><span class="line">const test = new Test()</span><br><span class="line">console.log(test.__proto__)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3347415bbf9c4afaa6b1ee2aa7b0d707~tplv-k3u1fbpfcp-watermark.image" alt="5.png"></p>
+<p>然后验证一下（对象的_proto_里面保存的是该对象的构造函数的protype）这句话：<br><code> console.log(test.__proto__ === Test.prototype) // true</code></p>
+<p>很明显，<code>test.__proto__</code> 和 <code>Test.prototype</code>这两个对象里面是同一个东西</p>
+<p>那么我们再思考一下， <strong><code>Test.prototype</code>也是一个对象，那么它是否也有<code>__proto__</code></strong> 呢？</p>
+<p>观察一下输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Test.prototype.__proto__)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f522bb814a7643e78a87d0ead124333d~tplv-k3u1fbpfcp-watermark.image" alt="3.png"><br>很显然，<code>Test.prototype.__proto__</code>是存在的，并且<strong>里面保存的是Object.prototype</strong></p>
+<p>那么，<code>Object.prototype</code>里面还有没有<code>__proto__</code>?</p>
+<p>我们再输出打印一下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object.prototype.__proto__) // null</span><br></pre></td></tr></table></figure>
+<p>由此可知： <code>Object</code>是原型链最顶端的东西的了。</p>
+<p>我们可以得到一个关系图：</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0fd9782fa2a4470fbb8625130290e3a5~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<h1 id="原型继承，原型链继承"><a href="#原型继承，原型链继承" class="headerlink" title="原型继承，原型链继承"></a>原型继承，原型链继承</h1><p>再来看一段代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function Test() &#123;</span><br><span class="line">     this.a = 1</span><br><span class="line">&#125;</span><br><span class="line">Test.prototype.b = 2</span><br><span class="line">const test = new Test()</span><br><span class="line">console.log(test)</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4fa41bbacccd43d5a1db8c35398fe5a3~tplv-k3u1fbpfcp-watermark.image" alt="39.png"></p>
+<p>当我在<code>Test.prototype</code>上面加了一个<code>b</code> 之后，<code>test</code>仍能访问到，并且是在<code>test</code>的<code>__proto__</code>中访问到的。</p>
+<p>我执行下面这一行代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object.prototype.c = 3</span><br></pre></td></tr></table></figure>
+<p>再次输出：</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9ec571cf7ada4186a3744843dfb0a5ce~tplv-k3u1fbpfcp-watermark.image" alt="28-33.png"></p>
+<p>可以看到，即使是原型链末端的<code>Object</code>上面的东西，<code>test</code>也仍然可以访问到。</p>
+<p>那么可以得到如下关系：</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e10babafc31e4814b0c83c02cd7cae13~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<p>那么我再在上面的代码做一些修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function Test() &#123;</span><br><span class="line">    this.a = 1</span><br><span class="line">&#125;</span><br><span class="line">Test.prototype.b = 2</span><br><span class="line">Test.prototype.c = 1</span><br><span class="line">const test = new Test()</span><br><span class="line">Object.prototype.c = 3</span><br><span class="line">console.log(test)</span><br><span class="line">console.log(test.a)</span><br><span class="line">console.log(test.b)</span><br><span class="line">console.log(test.c)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>得到了下面结果：</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4e0a8afab01b4bbf9a3ad03fa3aa5df8~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_19-36-07.png"></p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5859a608c12e43ff87fb67c4e6f511f1~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_19-36-07.png"></p>
+<p>我在<code>Test.prototype</code>加了<code>c</code>属性，并且值与<code> Object.prototype</code>不同，输出的结果值是<code>Test.prototype.c</code>的值。并且，<code>test</code>全部都能访问到，<strong>与是否是构造这个对象的构造函数无关</strong></p>
+<p>那么我们可以得出一个结论：</p>
+<p><strong>以一个对象为开头，以<code>__proto__</code>为节点， 以<code>Object.__proto__</code> 为重点连接成的一条链。<br>查找数据时，得到的值，是沿着原型链查找到的最早的值，查找到后就不再往后查找了，如果没有，就继续往后找，一直找到<code> Object.prototype</code>为止</strong> </p>
+<p>这就是原型继承，原型链继承</p>
+<h1 id="Object和Function特殊性"><a href="#Object和Function特殊性" class="headerlink" title="Object和Function特殊性"></a>Object和Function特殊性</h1><p>上面我们知道了<code>Test.prototype</code>与<code>test.__proto__</code>其实是同一个东西。<br>那么我们再来看看，<code>Test.__proto__</code>是什么？</p>
+<p>看下面一段代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Test.__proto__)   //  ƒ () &#123; [native code] &#125;</span><br></pre></td></tr></table></figure>
+<p>说明<code>Test</code>是由<code>Function</code>构造而来的。</p>
+<p>那么<code>Object.__proto__</code>呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(Object.__proto__)   //  ƒ () &#123; [native code] &#125;</span><br></pre></td></tr></table></figure>
+<p>说明<code>Object</code>是由<code>Function</code>构造而来的。</p>
+<p>再看看<code>Function</code>的原型和原型链</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">console.log(Function.__proto__)</span><br><span class="line">console.log(Function.prototype)</span><br><span class="line">console.log(Function.__proto__===Function.prototype)</span><br></pre></td></tr></table></figure>
+<p>输出结果如下：</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a657ed4431134d50a72085b360e63052~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_19-36-07.png"></p>
+<p>由此再试一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">console.log(typeof Object)</span><br><span class="line">console.log(Object.__proto__ === Function.prototype)</span><br><span class="line">console.log(Object.__proto__ === Function.__proto__)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c3ad15c3cfcd4bb2a61690e13bafc0d2~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_19-36-07.png"></p>
+<p>得出一个结论：</p>
+<p><strong>Object是一个函数,</strong></p>
+<p><strong>Object是由Function构造出来的,</strong></p>
+<p><strong>Function是由自己构造出来的。</strong></p>
+<p><code>Object.__proto__</code>,<code>Function.prototype</code>,<code>Function.__proto__</code><strong>是同一个东西</strong>。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>GUJI</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://baiaoz.top/2021/10/17/%E5%8E%9F%E5%9E%8B%EF%BC%8C%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%90%86%E8%A7%A3Object%E5%92%8CFunction%E7%89%B9%E6%AE%8A%E6%80%A7/">http://baiaoz.top/2021/10/17/%E5%8E%9F%E5%9E%8B%EF%BC%8C%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%90%86%E8%A7%A3Object%E5%92%8CFunction%E7%89%B9%E6%AE%8A%E6%80%A7/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2021<a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/js/"># -js</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/10/17/%E5%9F%BA%E4%BA%8EPromiseA%E8%A7%84%E8%8C%83%E6%89%8B%E5%86%99%E7%9A%84Promise/">基于PromiseA规范手写的Promise</a>
+            
+            
+            <a class="next" rel="next" href="/2021/10/17/win10%E4%B8%8Bnginx%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"></a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© GUJI | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

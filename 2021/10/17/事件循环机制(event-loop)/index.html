@@ -17,7 +17,7 @@
     <meta name="keywords" content="个人博客 GuJi Baiao">
 
 
-<title>Hello World | GUJIA</title>
+<title>事件循环机制(event-loop) | GUJIA</title>
 
 
 
@@ -193,7 +193,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Hello World</h1>
+            <h1 class="post-title">事件循环机制(event-loop)</h1>
             
                 <div class="post-meta">
                     
@@ -202,28 +202,53 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">October 16, 2021&nbsp;&nbsp;13:39:12</a>
+                        Date: <a href="#">October 17, 2021&nbsp;&nbsp;17:29:10</a>
                         </span>
                     
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/js/">js</a>
+                            
+                        </span>
                     
                 </div>
             
         </header>
 
         <div class="post-content">
-            <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+            <p>事件循环机制由三部分构成:</p>
+<ul>
+<li><strong>调用栈(call stack)</strong></li>
+<li><strong>微任务队列(Microtask Queue)</strong></li>
+<li><strong>消息队列(Message Queue)</strong></li>
+</ul>
+<p><em>event-loop</em> 开始的时候会从全局一行一行的执行,遇到函数调用,会将任务压入调用栈中,被压的函数称之为<strong>帧(Frame)</strong>,当函数返回后会从调用栈中弹出</p>
+<h1 id="同步代码执行"><a href="#同步代码执行" class="headerlink" title="同步代码执行"></a>同步代码执行</h1><p>来看下面一断代码的执行:</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7d530352b68540e7b7396a8ca76b902e~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<p>当<code>func2()</code>执行时,先执行<code>console.log(2)</code>,执行完毕后弹出.</p>
+<p>此时<code>func1()</code>进入调用栈:</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1bf0e1a07cf44d63b7484693c1718965~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<p>进入<code>func1()</code>时,<code>console.log(1)</code>被压入调用栈,执行,弹出,</p>
+<p><code>console.log(3)</code>被压入</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6857a5ea6402401ba3c46dd7ce42a4ea~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<p>最后结果:</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/de525986ecf4477d90ced2a2ecea9691~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<h1 id="异步代码-加入-setTimeout"><a href="#异步代码-加入-setTimeout" class="headerlink" title="异步代码:加入 setTimeout"></a>异步代码:加入 setTimeout</h1><p>在上面一段代码加入<code>setTimeout</code>后</p>
+<p>(简略了<code>func1</code>的过程)</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/761fe83fbd1a4f99bb819588a0cfaa3a~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<p>执行到<code>setTimeout(fetch,setInterval)</code>后,其中的代码会压入<strong>消息队列</strong>中,等待调用栈的同步代码执行完成后再调用</p>
+<p>所以最后的结果:</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0fb3fa1662f14c7690b6e28c4a4591d8~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/317433758ec642f98548a0532a9a2104~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<h1 id="异步代码-加入-Promise"><a href="#异步代码-加入-Promise" class="headerlink" title="异步代码:加入 Promise"></a>异步代码:加入 Promise</h1><p>当加入<code>Promise(async await)</code>时,<strong>Promise中的异步代码会压入微队列</strong>,等待同步代码执行完毕后,将微队列中的代码按顺序压入调用栈.</p>
+<p>而消息队列中的代码需要<strong>等微队列中的代码清空后才能继续执行</strong>.</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/58d36a00089244098ea752f115c8b28a~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<p>最终结果:</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ab6efad116494f0fa1ba7af7012a52bc~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-08-16_20-20-53.png"></p>
+<p><strong>总结一下事件循环的代码执行优先级:</strong></p>
+<p><strong>同步代码</strong>&gt;<code>Promise(async await)</code>&gt;<code>setTimeout(fetch,setInterval)</code></p>
 
         </div>
 
@@ -238,7 +263,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="http://baiaoz.top/2021/10/16/hello-world/">http://baiaoz.top/2021/10/16/hello-world/</a></span>
+                        <span><a href="http://baiaoz.top/2021/10/17/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6(event-loop)/">http://baiaoz.top/2021/10/17/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6(event-loop)/</a></span>
                     </p>
                 
                 
@@ -261,6 +286,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/js/"># -js</a>
+                    
+                        
                 </span>
             </div>
             <div>
@@ -271,8 +300,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/10/17/TCP%E5%8D%8F%E8%AE%AEUDP%E5%8D%8F%E8%AE%AE/">TCP协议UDP协议</a>
+                <a class="prev" rel="prev" href="/2021/10/17/%E5%AE%9E%E7%8E%B0Promise.all(),%20Promise.race()/">实现Promise.all(), Promise.race()</a>
             
+            
+            <a class="next" rel="next" href="/2021/10/17/%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%BB%A7%E6%89%BF%EF%BC%8C%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%BB%A7%E6%89%BF%EF%BC%8C%E7%BB%84%E5%90%88%E5%BC%8F%E7%BB%A7%E6%89%BF%EF%BC%8C%E5%AF%84%E7%94%9F%E5%BC%8F%E7%BB%84%E5%90%88%E7%BB%A7%E6%89%BF/">原型链继承，构造函数继承，组合式继承，寄生式组合继承</a>
             
         </section>
 

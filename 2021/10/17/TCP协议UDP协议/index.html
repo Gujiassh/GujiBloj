@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="chinese">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="GUJI">
+
+
+
+    <meta name="description" content="这是GuJi的个人博客">
+
+
+    <meta name="keywords" content="个人博客 GuJi Baiao">
+
+
+<title>TCP协议UDP协议 | GUJIA</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">GuJi&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">GuJi&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">TCP协议UDP协议</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">GUJI</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 17, 2021&nbsp;&nbsp;17:02:33</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><strong>TCP和UDP都工作在传输层.</strong></p>
+<ul>
+<li>传输层：负责对报文进行分组和重组，并以TCP或UDP协议格式封装报文。<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><h2 id="三次挥手"><a href="#三次挥手" class="headerlink" title="三次挥手"></a>三次挥手</h2>传输过程中:</li>
+</ul>
+<p>客户端向浏览器端请求连接:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">客户端请求连接        ------(发送SYN包)--&gt;      服务端</span><br><span class="line"></span><br><span class="line">客户端              &lt;----(发送SYN+ASK包) ---   服务端收到SYN包(允许建立连接)</span><br><span class="line"></span><br><span class="line">客户端收到SYN+ASK包  ----(发送ASK包)-----&gt;      服务端</span><br><span class="line"></span><br><span class="line">连接建立</span><br></pre></td></tr></table></figure>
+
+<p>这三次发送/接受数据包的过程就叫三次握手</p>
+<h3 id="为什么要三次而不是两次"><a href="#为什么要三次而不是两次" class="headerlink" title="为什么要三次而不是两次?"></a>为什么要三次而不是两次?</h3><p><strong>这是防止已经失效的请求报文突然发送到客户端,造成请求重复</strong></p>
+<p>假设只有<strong>两次握手</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">客户端请求连接  ----(发送SYN包1)----&gt;  服务端</span><br></pre></td></tr></table></figure>
+
+<p>此时由于未知原因,SYN包1没有到达服务端,在网络节点中, 请求超时, <strong>客户端重新发送SYN包2</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">客户端请求连接  ----(SYN包2)(SYN包1)----&gt;  服务端</span><br></pre></td></tr></table></figure>
+<p>若服务端收到SYN包2后建立连接,  这时,</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">客户端请求连接  ----(SYN包1)----&gt;  服务端得到(SYN包2)允许连接</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">                        (SYN包1)</span><br><span class="line"></span><br><span class="line">客户端请求连接(连接1已建立)      &lt;----(SYN包2+ACK包)----      服务端得到(SYN包2)(连接1已建立)</span><br></pre></td></tr></table></figure>
+
+<p><strong>若此时SYN包1又发送到了服务端</strong>  服务端会认为客户端又发起了一次请求连接.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">客户端请求连接(连接1已建立)      &lt;----(SYN包1+ACK包)----      服务端得到(SYN包1) (连接2已建立)</span><br><span class="line">                                                                              (连接1已建立)</span><br></pre></td></tr></table></figure>
+<p>显然,<strong>这会导致两边连接状态不一致</strong>,服务端认为有两个连接,而客户端认为只有一次连接</p>
+<p>如果是三次握手,服务端收不到客户端发的最后的ACK包,自然<strong>连接1</strong>就不会建立成功. </p>
+<p>这就保证了传输过程中<strong>在不可靠的的信道上建立可靠的连接</strong></p>
+<h3 id="发送数据时-如何处理丢包问题和乱序问题"><a href="#发送数据时-如何处理丢包问题和乱序问题" class="headerlink" title="发送数据时,如何处理丢包问题和乱序问题?"></a>发送数据时,如何处理丢包问题和乱序问题?</h3><p>连接建立成功后,TCP协议为每一个链接都建立了一个发送数据的缓冲区, <strong>将发送的报文放入缓冲区,并为他们排序</strong>:</p>
+<p>例如: 从报文的第一个字节序号为0,第二个字节序号为2,以此类推,对发送的数据进行排序,</p>
+<p><strong>数据发送时</strong>:从缓冲区取出一段数据如: 序号为0-100的数据,并将其与该段数据长度一起放入TCP协议头中.</p>
+<p>当服务端收到数据后回复一条<strong>由数据序号和数据长度组成的 ACK</strong>,表明已经收到该数据包并告知下一段数据发送的序列号</p>
+<p>这一问一答的方式,保证了数据传递完整性.</p>
+<p>假设 接收数据结束,服务端 校验时发现缺少数据,会向客户端发送一段缺失的数据包ACK,</p>
+<p>客户端收到后会重新发送该数据包.</p>
+<p>以上过程服务端客户端反过来依然试用.</p>
+<h2 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h2><p>假设 客户端主动请求断开连接</p>
+<p>第一次挥手:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">客户端 ---(发送FIN包)---&gt; 服务端 </span><br><span class="line"> (等待关闭1)</span><br></pre></td></tr></table></figure>
+
+<p>第二次挥手:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">客户端 &lt;---(ACK包(同意关闭))--- 服务端 (收到FIN包)</span><br><span class="line">(等待关闭1)                    (等待关闭1)</span><br></pre></td></tr></table></figure>
+<p>此时,双端仍然可以传输数据</p>
+<p>第三次挥手(双端传输完成数据之后):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">客户端 &lt;---(发送FIN包)--- 服务端(即将关闭连接等待确认) </span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>第四次挥手:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">客户端 ---(发送ACK包)---&gt; 服务端(收到后ACK包确认立即关闭) </span><br><span class="line">  (超时等待后关闭)</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+
+<h3 id="为什么要经过超时等待"><a href="#为什么要经过超时等待" class="headerlink" title="为什么要经过超时等待?"></a>为什么要经过超时等待?</h3><p>这是因为,如果客户端发送ACK包后立即断开连接,一旦ACK包在网络中丢失, 服务器将一直处于等待状态, 无法关闭连接.<br><strong>此时:若服务端没有收到客户端发送的ACK包,会重新发送FIN包询问是否关闭连接</strong></p>
+<h1 id="UDP协议"><a href="#UDP协议" class="headerlink" title="UDP协议"></a>UDP协议</h1><p>UDP协议与TCP协议不同,发送数据时,直接将数据包发出,不需要确认连接,与数据完整性.</p>
+<p>这个特点使UDP协议传输数据非常快,但是丢包风险也相对较高.</p>
+<h1 id="UNP与TCP适用场景"><a href="#UNP与TCP适用场景" class="headerlink" title="UNP与TCP适用场景"></a>UNP与TCP适用场景</h1><ul>
+<li>TCP协议保证了数据传输的完整性,所以适合用于对数据完整要求较高的场景,例如: 下载影视,文件传输,浏览网页等</li>
+<li>UDP协议消耗性能少,传输速度快,适用于对实时性 要求高,能容忍少量丢包的场景,例如:打电话,视频通话,网络直播等场景.</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>GUJI</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://baiaoz.top/2021/10/17/TCP%E5%8D%8F%E8%AE%AEUDP%E5%8D%8F%E8%AE%AE/">http://baiaoz.top/2021/10/17/TCP%E5%8D%8F%E8%AE%AEUDP%E5%8D%8F%E8%AE%AE/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2021<a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/TCP-UDP/"># -TCP -UDP</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/10/17/%E6%89%8B%E5%86%99%20call,%20apply,bind/">手写 call, apply,bind</a>
+            
+            
+            <a class="next" rel="next" href="/2021/10/16/hello-world/">Hello World</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© GUJI | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

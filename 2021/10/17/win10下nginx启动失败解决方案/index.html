@@ -17,7 +17,7 @@
     <meta name="keywords" content="个人博客 GuJi Baiao">
 
 
-<title>Hello World | GUJIA</title>
+<title>GUJIA</title>
 
 
 
@@ -127,73 +127,11 @@
                 <div class="container">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
-</div>
-
-<script>
-    document.ready(
-        function () {
-            tocbot.init({
-                tocSelector: '.tocbot-list',
-                contentSelector: '.post-content',
-                headingSelector: 'h1, h2, h3, h4, h5',
-                collapseDepth: 1,
-                orderedList: false,
-                scrollSmooth: true,
-            })
-        }
-    )
-
-    function expand_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 6,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "collapse_toc()");
-        b.innerHTML = "Collapse all"
-    }
-
-    function collapse_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 1,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "expand_toc()");
-        b.innerHTML = "Expand all"
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-</script>
-    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Hello World</h1>
+            <h1 class="post-title"></h1>
             
                 <div class="post-meta">
                     
@@ -202,7 +140,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">October 16, 2021&nbsp;&nbsp;13:39:12</a>
+                        Date: <a href="#">October 17, 2021&nbsp;&nbsp;17:29:08</a>
                         </span>
                     
                     
@@ -211,19 +149,22 @@
         </header>
 
         <div class="post-content">
-            <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+            <p> 在dos界面执行<code> start nginx</code> 后，再执行<code>tasklist /fi &quot;imagename eq nginx.exe&quot;</code>命令，出现以下问题：</p>
+<p><strong>信息：没有运行的任务指定标准</strong></p>
+<p>网上搜索了一下，原因是nginx的默认端口被占用；</p>
+<p>在<code>nginx安装目录\conf</code>下找到： nginx.conf文件，修改其中默认端口：</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4047c7fed11c452ea2593dd66c765972~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-10-06_14-03-21.png"></p>
+<p>仍然不能解决；</p>
+<p><strong>原因是： 81端口没有开放；</strong></p>
+<p><strong>端口开放方法：</strong> <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40161254/article/details/83010487">https://blog.csdn.net/weixin_40161254/article/details/83010487</a></p>
+<p>仍然没有解决；</p>
+<p><strong>原因是： 没有使用管理员权限</strong></p>
+<p>解决： 使用管理员运行cmd， 再cd到nginx文件夹中，此时运行 <code>tasklist /fi &quot;imagename eq nginx.exe&quot;</code> </p>
+<p>出现：</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b8b25b9bbdf54db28533774152e46ffd~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-10-06_14-03-21.png"></p>
+<p>打开浏览器：<br>输入： <a target="_blank" rel="noopener" href="http://localhost:81/">http://localhost:81/</a><br>出现：</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8db8ed24463b49898a5242388e66135e~tplv-k3u1fbpfcp-watermark.image" alt="Snipaste_2021-10-06_14-08-20.png"></p>
+<p>说明nginx启动成功</p>
 
         </div>
 
@@ -238,7 +179,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="http://baiaoz.top/2021/10/16/hello-world/">http://baiaoz.top/2021/10/16/hello-world/</a></span>
+                        <span><a href="http://baiaoz.top/2021/10/17/win10%E4%B8%8Bnginx%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">http://baiaoz.top/2021/10/17/win10%E4%B8%8Bnginx%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</a></span>
                     </p>
                 
                 
@@ -271,8 +212,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2021/10/17/TCP%E5%8D%8F%E8%AE%AEUDP%E5%8D%8F%E8%AE%AE/">TCP协议UDP协议</a>
+                <a class="prev" rel="prev" href="/2021/10/17/%E5%8E%9F%E5%9E%8B%EF%BC%8C%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%90%86%E8%A7%A3Object%E5%92%8CFunction%E7%89%B9%E6%AE%8A%E6%80%A7/">原型，原型链理解Object和Function特殊性</a>
             
+            
+            <a class="next" rel="next" href="/2021/10/17/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9A%20MySQL%E7%AE%80%E5%8D%95%E5%91%BD%E4%BB%A4%EF%BC%88%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%EF%BC%89/">学习笔记： MySQL简单命令（增删改查）</a>
             
         </section>
 
